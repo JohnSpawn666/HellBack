@@ -1,0 +1,13 @@
+package john.spawn.hellteam.hellback.control;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class HellBackApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
