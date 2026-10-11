@@ -3,11 +3,12 @@ package john.spawn.hellteam.hellback.config;
 import john.spawn.hellteam.hellback.util.UtilProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
@@ -22,10 +23,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
-                .csrf(CsrfConfigurer::spa)
+                .csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(UtilProperties.getProperties())
-                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/csrf").permitAll()
+                        .requestMatchers(UtilProperties.getProperties()).permitAll()
                         .anyRequest()
                         .authenticated());
         return http.build();
