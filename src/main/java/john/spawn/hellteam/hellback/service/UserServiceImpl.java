@@ -1,8 +1,12 @@
 package john.spawn.hellteam.hellback.service;
 
-import john.spawn.hellteam.hellback.bean.UserRequest;
-import john.spawn.hellteam.hellback.bean.UserResponse;
+import john.spawn.hellteam.hellback.bean.UserCreateRequest;
+import john.spawn.hellteam.hellback.bean.UserCreateResponse;
+import john.spawn.hellteam.hellback.bean.UserLoginRequest;
+import john.spawn.hellteam.hellback.bean.UserLoginResponse;
 import john.spawn.hellteam.hellback.database.IUserRepository;
+import john.spawn.hellteam.hellback.database.UserEntity;
+import john.spawn.hellteam.hellback.error.FailLoginException;
 import john.spawn.hellteam.hellback.error.PseudoAlreadyExistException;
 import john.spawn.hellteam.hellback.error.SaveException;
 import john.spawn.hellteam.hellback.mapper.IUserMapper;
@@ -26,7 +30,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserResponse save(UserRequest request) {
+    public UserCreateResponse save(UserCreateRequest request) {
         try {
             return mapper.mapToUserSaveResponse(repository.saveAndFlush(mapper.mapToUserEntity(request, passwordEncoder)));
         } catch (DataIntegrityViolationException ex) {
@@ -38,6 +42,17 @@ public class UserServiceImpl implements IUserService {
         } catch (Exception _) {
             throw new SaveException("Exception", TABLE);
         }
+    }
+
+    @Override
+    public UserLoginResponse login(UserLoginRequest request) {
+
+        UserEntity entity = repository.findByPseudo(request.pseudo());
+
+        if (entity == null || !passwordEncoder.matches(request.password(), entity.getPassword())) {
+            throw new FailLoginException(request.pseudo());
+        }
+        return mapper.mapToUserLoginResponse(entity);
     }
 
     /**

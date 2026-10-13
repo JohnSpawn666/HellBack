@@ -1,7 +1,8 @@
 package john.spawn.hellteam.hellback.mapper;
 
-import john.spawn.hellteam.hellback.bean.UserRequest;
-import john.spawn.hellteam.hellback.bean.UserResponse;
+import john.spawn.hellteam.hellback.bean.UserCreateRequest;
+import john.spawn.hellteam.hellback.bean.UserCreateResponse;
+import john.spawn.hellteam.hellback.bean.UserLoginResponse;
 import john.spawn.hellteam.hellback.database.UserEntity;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -13,10 +14,13 @@ public interface IUserMapper extends IMapper {
 
     @Mapping(target = "pseudo", source = "request.pseudo")
     @Mapping(target = "password", source = "request.password", qualifiedByName = "encode")
-    UserEntity mapToUserEntity(UserRequest request, @Context PasswordEncoder passwordEncoder);
+    UserEntity mapToUserEntity(UserCreateRequest request, @Context PasswordEncoder passwordEncoder);
 
-    @Mapping(target = "id", source = "response.id")
-    @Mapping(target = "pseudo", source = "response.pseudo")
-    @Mapping(target = "password", source = "response.password")
-    UserResponse mapToUserSaveResponse(UserEntity response);
+    @Mapping(target = "id", source = "entity.id")
+    @Mapping(target = "pseudo", source = "entity.pseudo")
+    UserCreateResponse mapToUserSaveResponse(UserEntity entity);
+
+    @Mapping(target = "id", source = "entity.id")
+    @Mapping(target = "pseudo", source = "entity.pseudo")
+    UserLoginResponse mapToUserLoginResponse(UserEntity entity);
 }
