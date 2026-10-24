@@ -1,8 +1,10 @@
 package john.spawn.hellteam.hellback.mapper;
 
-import john.spawn.hellteam.hellback.bean.UserCreateRequest;
-import john.spawn.hellteam.hellback.bean.UserCreateResponse;
-import john.spawn.hellteam.hellback.bean.UserLoginResponse;
+import john.spawn.hellteam.hellback.bean.user.create.UserCreateRequest;
+import john.spawn.hellteam.hellback.bean.user.create.UserCreateResponse;
+import john.spawn.hellteam.hellback.bean.user.login.UserLoginResponse;
+import john.spawn.hellteam.hellback.bean.user.select.UserSelectResponse;
+import john.spawn.hellteam.hellback.bean.user.select.UserUpdateResponse;
 import john.spawn.hellteam.hellback.database.UserEntity;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -23,4 +25,12 @@ public interface IUserMapper extends IMapper {
     @Mapping(target = "id", source = "entity.id")
     @Mapping(target = "pseudo", source = "entity.pseudo")
     UserLoginResponse mapToUserLoginResponse(UserEntity entity);
+
+    @Mapping(target = "id", source = "entity.id")
+    @Mapping(target = "pseudo", source = "entity.pseudo")
+    UserSelectResponse mapToUserSelectResponse(UserEntity entity);
+
+    @Mapping(target = "id", source = "entity.id")
+    @Mapping(target = "pseudo", source = "entity.pseudo")
+    UserUpdateResponse mapToUserUpdateResponse(UserEntity entity);
 }

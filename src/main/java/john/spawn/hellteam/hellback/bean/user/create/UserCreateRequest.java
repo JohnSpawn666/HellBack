@@ -1,4 +1,4 @@
-package john.spawn.hellteam.hellback.bean;
+package john.spawn.hellteam.hellback.bean.user.create;
 
 
 import jakarta.validation.constraints.NotNull;
